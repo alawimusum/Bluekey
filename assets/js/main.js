@@ -87,6 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const rowSatThu = document.getElementById('row-sat-thu');
         const rowFriday = document.getElementById('row-fri');
         
+        if (!rowSatThu || !rowFriday) return;
+        
+        const isEnglish = document.documentElement.getAttribute('lang') === 'en';
+        
         let isOpen = false;
         
         // Remove active state
@@ -96,23 +100,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const satThuStatus = rowSatThu.querySelector('.hour-status');
         const friStatus = rowFriday.querySelector('.hour-status');
         
+        const closedText = isEnglish ? 'Closed' : 'مغلق';
+        const openText = isEnglish ? 'Open Now' : 'مفتوح الآن';
+        
         // Reset status badges
-        satThuStatus.textContent = 'مغلق';
-        friStatus.textContent = 'مغلق';
+        satThuStatus.textContent = closedText;
+        friStatus.textContent = closedText;
         
         if (day === 5) {
             // Friday: 3:00 PM to 12:00 Midnight (15:00 to 24:00)
             rowFriday.classList.add('active');
             if (hour >= 15 && hour < 24) {
                 isOpen = true;
-                friStatus.textContent = 'مفتوح الآن';
+                friStatus.textContent = openText;
             }
         } else {
             // Saturday to Thursday: 7:00 AM to 11:00 PM (7:00 to 23:00)
             rowSatThu.classList.add('active');
             if (hour >= 7 && hour < 23) {
                 isOpen = true;
-                satThuStatus.textContent = 'مفتوح الآن';
+                satThuStatus.textContent = openText;
             }
         }
     }
@@ -133,15 +140,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const neighborhood = document.getElementById('neighborhood').value;
         const details = document.getElementById('issueDetails').value.trim();
         
+        const isEnglish = document.documentElement.getAttribute('lang') === 'en';
+        
         // Simple Validation
         if (!name) {
-            alert('يرجى إدخال اسم العميل');
+            alert(isEnglish ? 'Please enter your name.' : 'يرجى إدخال اسم العميل');
             document.getElementById('clientName').focus();
             return;
         }
         
         if (!phone) {
-            alert('يرجى إدخال رقم الجوال');
+            alert(isEnglish ? 'Please enter your phone number.' : 'يرجى إدخال رقم الجوال');
             document.getElementById('clientPhone').focus();
             return;
         }
@@ -149,46 +158,72 @@ document.addEventListener('DOMContentLoaded', () => {
         // Validate Saudi phone formats (e.g. 05xxxxxxxx, 5xxxxxxxx, etc.)
         const saudiPhoneRegex = /^(05|5)\d{8}$/;
         if (!saudiPhoneRegex.test(phone)) {
-            alert('يرجى إدخال رقم جوال سعودي صحيح (مثال: 0533359350)');
+            alert(isEnglish ? 'Please enter a valid Saudi phone number (example: 0533359350).' : 'يرجى إدخال رقم جوال سعودي صحيح (مثال: 0533359350)');
             document.getElementById('clientPhone').focus();
             return;
         }
         
         if (!service) {
-            alert('يرجى اختيار نوع الخدمة المطلوبة');
+            alert(isEnglish ? 'Please select the service required.' : 'يرجى اختيار نوع الخدمة المطلوبة');
             document.getElementById('serviceType').focus();
             return;
         }
         
         if (!neighborhood) {
-            alert('يرجى اختيار الحي / الموقع');
+            alert(isEnglish ? 'Please select your neighborhood/location.' : 'يرجى اختيار الحي / الموقع');
             document.getElementById('neighborhood').focus();
             return;
         }
         
         // Translate service type keys to reader-friendly text
-        const serviceNames = {
+        const serviceNamesAr = {
             'electricity': '⚡ خدمات الكهرباء',
             'plumbing': '💧 خدمات السباكة',
             'ac': '❄️ تبريد وتكييف',
             'general': '🛠️ صيانة عامة'
         };
+        const serviceNamesEn = {
+            'electricity': '⚡ Electrical Services',
+            'plumbing': '💧 Plumbing Services',
+            'ac': '❄️ AC & Cooling',
+            'general': '🛠️ General Maintenance'
+        };
+        const serviceNames = isEnglish ? serviceNamesEn : serviceNamesAr;
         
-        const neighborhoodNames = {
+        const neighborhoodNamesAr = {
             'arid': '📍 العارض',
             'qairawan': '📍 القيروان',
             'narjis': '📍 النرجس',
             'other': '📍 أحياء أخرى بالرياض'
         };
+        const neighborhoodNamesEn = {
+            'arid': '📍 Al-Arid',
+            'qairawan': '📍 Al-Qairawan',
+            'narjis': '📍 Al-Narjis',
+            'other': '📍 Other Riyadh neighborhoods'
+        };
+        const neighborhoodNames = isEnglish ? neighborhoodNamesEn : neighborhoodNamesAr;
         
         // Formulate message template
-        const intro = 'السلام عليكم ورحمة الله وبركاته،\nأود حجز موعد صيانة منزلية مع شركة Blue Key. فيما يلي بيانات الطلب:';
-        const formattedName = `👤 الاسم: ${name}`;
-        const formattedPhone = `📞 الجوال: ${phone}`;
-        const formattedService = `🛠️ الخدمة المطلوبة: ${serviceNames[service] || service}`;
-        const formattedLocation = `📍 الحي / الموقع: ${neighborhoodNames[neighborhood] || neighborhood}`;
-        const formattedDetails = details ? `📝 تفاصيل العطل: ${details}` : '📝 تفاصيل العطل: لا توجد تفاصيل إضافية';
-        const outro = 'يرجى تأكيد موعد الزيارة والاتصال بي فوراً لتأكيد الطلب. شكراً لكم.';
+        let intro, formattedName, formattedPhone, formattedService, formattedLocation, formattedDetails, outro;
+        
+        if (isEnglish) {
+            intro = 'Hello, I would like to book a home maintenance service with Blue Key. Here are my request details:';
+            formattedName = `👤 Name: ${name}`;
+            formattedPhone = `📞 Phone: ${phone}`;
+            formattedService = `🛠️ Service Required: ${serviceNames[service] || service}`;
+            formattedLocation = `📍 Neighborhood / Location: ${neighborhoodNames[neighborhood] || neighborhood}`;
+            formattedDetails = details ? `📝 Fault Details: ${details}` : '📝 Fault Details: No additional details';
+            outro = 'Please confirm the visit appointment and contact me as soon as possible. Thank you.';
+        } else {
+            intro = 'السلام عليكم ورحمة الله وبركاته،\nأود حجز موعد صيانة منزلية مع شركة Blue Key. فيما يلي بيانات الطلب:';
+            formattedName = `👤 الاسم: ${name}`;
+            formattedPhone = `📞 الجوال: ${phone}`;
+            formattedService = `🛠️ الخدمة المطلوبة: ${serviceNames[service] || service}`;
+            formattedLocation = `📍 الحي / الموقع: ${neighborhoodNames[neighborhood] || neighborhood}`;
+            formattedDetails = details ? `📝 تفاصيل العطل: ${details}` : '📝 تفاصيل العطل: لا توجد تفاصيل إضافية';
+            outro = 'يرجى تأكيد موعد الزيارة والاتصال بي فوراً لتأكيد الطلب. شكراً لكم.';
+        }
         
         const fullMessage = `${intro}\n\n${formattedName}\n${formattedPhone}\n${formattedService}\n${formattedLocation}\n${formattedDetails}\n\n${outro}`;
         
@@ -196,14 +231,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const waNumber = '966533359350';
         const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(fullMessage)}`;
         
-        // Open WhatsApp chat in a new tab (with noopener/noreferrer to prevent
-        // the new tab from gaining access to window.opener — mitigates
-        // "reverse tabnabbing" attacks)
         window.open(waUrl, '_blank', 'noopener,noreferrer');
         
-        // Optional: Reset form after booking
         bookingForm.reset();
-        alert('تم تجهيز طلبك! سيتم تحويلك الآن إلى الواتساب لإرسال رسالة التأكيد.');
+        alert(isEnglish ? 'Your request is ready! You will now be redirected to WhatsApp to send the confirmation message.' : 'تم تجهيز طلبك! سيتم تحويلك الآن إلى الواتساب لإرسال رسالة التأكيد.');
     });
 
     // --- 5. Legal Modals Handler ---
@@ -262,5 +293,112 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // --- 6. Language Switcher (Arabic / English) ---
+    const langToggle = document.getElementById('lang-toggle');
+    
+    function setLanguage(lang) {
+        if (lang === 'en') {
+            document.title = 'Blue Key Company | Home Maintenance Services in Riyadh';
+            document.documentElement.setAttribute('lang', 'en');
+            document.documentElement.setAttribute('dir', 'ltr');
+            localStorage.setItem('lang', 'en');
+            
+            if (langToggle) {
+                langToggle.innerHTML = `
+                    <img src="assets/images/sa.svg" alt="العربية" class="flag-icon">
+                    <span>AR</span>
+                `;
+                langToggle.setAttribute('aria-label', 'Switch to Arabic');
+            }
+        } else {
+            document.title = 'شركة Blue Key | خدمات الصيانة المنزلية باحترافية وأمان في الرياض';
+            document.documentElement.setAttribute('lang', 'ar');
+            document.documentElement.setAttribute('dir', 'rtl');
+            localStorage.setItem('lang', 'ar');
+            
+            if (langToggle) {
+                langToggle.innerHTML = `
+                    <img src="assets/images/us.svg" alt="English" class="flag-icon">
+                    <span>EN</span>
+                `;
+                langToggle.setAttribute('aria-label', 'تبديل اللغة');
+            }
+        }
+        
+        // Dynamic input placeholders update
+        const inputs = document.querySelectorAll('[data-placeholder-ar]');
+        inputs.forEach(input => {
+            const placeholder = lang === 'en' ? input.getAttribute('data-placeholder-en') : input.getAttribute('data-placeholder-ar');
+            if (placeholder) {
+                input.setAttribute('placeholder', placeholder);
+            }
+        });
+
+        // Dynamic select options update
+        const options = document.querySelectorAll('option[data-text-ar]');
+        options.forEach(opt => {
+            const text = lang === 'en' ? opt.getAttribute('data-text-en') : opt.getAttribute('data-text-ar');
+            if (text) {
+                opt.textContent = text;
+            }
+        });
+
+        // Update calendar text if it exists
+        updateCalendarStatus();
+    }
+    
+    // Initial load language setup
+    const savedLang = localStorage.getItem('lang') || 'ar';
+    setLanguage(savedLang);
+    
+    if (langToggle) {
+        langToggle.addEventListener('click', () => {
+            const currentLang = document.documentElement.getAttribute('lang');
+            const newLang = currentLang === 'ar' ? 'en' : 'ar';
+            setLanguage(newLang);
+        });
+    }
+
+    // --- 7. Theme Switcher (Light / Dark Mode) ---
+    const themeToggle = document.getElementById('theme-toggle');
+    
+    function setTheme(theme) {
+        if (theme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            
+            if (themeToggle) {
+                themeToggle.innerHTML = `<i class="fa-solid fa-sun"></i>`;
+                themeToggle.setAttribute('aria-label', 'تبديل إلى المظهر المضيء');
+            }
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            
+            if (themeToggle) {
+                themeToggle.innerHTML = `<i class="fa-solid fa-moon"></i>`;
+                themeToggle.setAttribute('aria-label', 'تبديل إلى المظهر المظلم');
+            }
+        }
+    }
+    
+    // Initial load theme setup
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        setTheme(savedTheme);
+    } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(prefersDark ? 'dark' : 'light');
+    }
+    
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+    }
+
 });
 

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap');
 
 /* --- CSS Variables & Design System --- */
 :root {
@@ -632,8 +632,9 @@ img {
 
 .service-icon-floating {
     position: absolute;
-    bottom: -25px;
-    right: 25px;
+    top: -27px;
+    left: 25px;
+    right: auto;
     width: 55px;
     height: 55px;
     background-color: var(--white);
@@ -657,6 +658,7 @@ img {
 }
 
 .service-body {
+    position: relative;
     padding: 40px 25px 25px 25px;
     flex-grow: 1;
     display: flex;
@@ -1224,7 +1226,7 @@ textarea.form-control {
     height: 40px;
     border-radius: var(--border-radius-full);
     background-color: rgba(255, 255, 255, 0.05);
-    color: var(--white);
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1311,7 +1313,7 @@ textarea.form-control {
 }
 
 .footer-contact-text h4 {
-    color: var(--white);
+    color: #ffffff;
     font-size: 0.95rem;
     font-weight: 700;
     margin-bottom: 4px;
@@ -1324,33 +1326,71 @@ textarea.form-control {
     text-align: right;
 }
 
+/* --- Redesigned Centered Footer Bottom Section --- */
 .footer-bottom {
-    padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 35px;
+    padding-bottom: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
+    justify-content: center;
+    text-align: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.footer-barcode {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.barcode-img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    border-radius: var(--border-radius-sm);
+    background-color: #ffffff; /* Always white for barcode scanner readability */
+    padding: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: var(--transition);
+}
+
+.barcode-img:hover {
+    transform: scale(1.06);
+    box-shadow: 0 6px 25px rgba(0, 141, 223, 0.55);
+}
+
+.footer-cr-info {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff !important; /* Force white for readability on dark footer background */
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
 }
 
 .footer-bottom p {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 0.95rem;
+    margin: 0;
 }
 
 .footer-bottom-links {
     display: flex;
     gap: 25px;
+    margin-top: 5px;
 }
 
 .footer-bottom-link {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 0.95rem;
+    transition: var(--transition);
 }
 
 .footer-bottom-link:hover {
-    color: var(--primary-blue);
+    color: var(--primary-blue) !important;
 }
 
 /* --- Floating Widgets --- */
@@ -1761,4 +1801,315 @@ textarea.form-control {
     .modal-body {
         padding: 16px;
     }
+}
+
+
+/* ==========================================================================
+   Antigravity Added: Multi-language (RTL/LTR) & Theme Toggling (Light/Dark)
+   ========================================================================== */
+
+/* --- Dark Mode Variables & Overrides --- */
+[data-theme="dark"] {
+    --primary-navy: #f8fafc;
+    --primary-navy-rgb: 248, 250, 252;
+    --text-dark: #f1f5f9;
+    --text-muted: #94a3b8;
+    --bg-light: #0b1329;
+    --bg-dark: #030712;
+    --white: #0f172a;
+    --secondary-blue: #1e293b;
+    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    --box-shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Specific elements to keep correct colors in dark mode */
+[data-theme="dark"] body {
+    background-color: var(--bg-light);
+}
+
+/* Ensure the footer remains dark with white text in dark mode */
+[data-theme="dark"] .footer {
+    background-color: var(--bg-dark);
+    color: #ffffff;
+}
+[data-theme="dark"] .footer-logo {
+    background-color: #ffffff;
+}
+[data-theme="dark"] .footer-logo img {
+    filter: none;
+}
+[data-theme="dark"] .footer-col-about p,
+[data-theme="dark"] .footer-links a,
+[data-theme="dark"] .footer-contact-item p {
+    color: #cbd5e1;
+}
+
+/* Ensure booking section remains dark and matches theme */
+[data-theme="dark"] .booking-section {
+    background: linear-gradient(135deg, var(--bg-dark) 0%, #0c235f 100%);
+    color: #ffffff;
+}
+[data-theme="dark"] .booking-section .section-title h2 {
+    color: #ffffff;
+}
+[data-theme="dark"] .booking-section .section-title p {
+    color: rgba(255, 255, 255, 0.7);
+}
+[data-theme="dark"] .form-control {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+[data-theme="dark"] .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-blue);
+}
+[data-theme="dark"] select.form-control option {
+    background-color: #0f172a;
+    color: #ffffff;
+}
+
+/* Hero Background in Dark Mode */
+[data-theme="dark"] .hero {
+    background: radial-gradient(circle at 10% 20%, rgba(12, 35, 95, 0.4) 0%, #07153b 90%);
+}
+
+/* Modals in Dark Mode */
+[data-theme="dark"] .modal-content {
+    background-color: var(--white);
+    color: var(--text-dark);
+}
+[data-theme="dark"] .modal-header {
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+[data-theme="dark"] .modal-footer {
+    border-top-color: rgba(255, 255, 255, 0.05);
+}
+[data-theme="dark"] .modal-body strong {
+    color: #ffffff;
+}
+
+/* Service Card & Floating Icon in Dark Mode */
+[data-theme="dark"] .service-icon-floating {
+    background-color: #1e293b;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Calendar Badge Statuses in Dark Mode */
+[data-theme="dark"] .hour-status {
+    background-color: #1e293b;
+    color: var(--text-dark);
+}
+[data-theme="dark"] .hour-row.active .hour-status {
+    background-color: rgba(0, 141, 223, 0.2);
+    color: #38bdf8;
+}
+
+/* Mobile Nav Menu background in Dark Mode */
+[data-theme="dark"] .nav-menu {
+    background-color: var(--white);
+}
+
+/* Back to Top button in Dark Mode */
+[data-theme="dark"] .back-to-top {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+}
+
+/* --- Header Controls Styling --- */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 15px;
+}
+
+.control-btn {
+    background-color: var(--secondary-blue);
+    border: 1px solid rgba(0, 141, 223, 0.15);
+    color: var(--primary-navy);
+    width: 42px;
+    height: 42px;
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    padding: 0;
+}
+
+.control-btn:hover {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 141, 223, 0.2);
+}
+
+.control-btn i {
+    font-size: 1.1rem;
+}
+
+/* Specific styling for language toggle to show flag and label */
+#lang-toggle {
+    width: auto;
+    padding: 0 12px;
+    gap: 6px;
+    font-weight: 700;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+#lang-toggle img.flag-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Theme active transitions */
+[data-theme="dark"] .control-btn {
+    background-color: #1e293b;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #f1f5f9;
+}
+[data-theme="dark"] .control-btn:hover {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+}
+
+/* --- Language Visibility --- */
+html[lang="en"] .ar-content {
+    display: none !important;
+}
+html[lang="ar"] .en-content {
+    display: none !important;
+}
+
+/* --- English Mode (LTR) Styles --- */
+html[lang="en"] body {
+    font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    direction: ltr;
+    text-align: left;
+}
+
+html[lang="en"] h1, 
+html[lang="en"] h2, 
+html[lang="en"] h3, 
+html[lang="en"] h4, 
+html[lang="en"] h5, 
+html[lang="en"] h6 {
+    font-family: 'Outfit', sans-serif;
+}
+
+html[lang="en"] .nav-link::after {
+    right: auto;
+    left: 0;
+}
+
+html[lang="en"] select.form-control {
+    padding-left: 15px;
+    padding-right: 45px;
+    background-position: right 15px center;
+}
+
+html[lang="en"] .coverage-info-box {
+    border-right: none;
+    border-left: 4px solid var(--primary-blue);
+}
+
+html[lang="en"] .modal-body .highlight-box {
+    border-right: none;
+    border-left: 4px solid var(--primary-blue);
+}
+
+html[lang="en"] .footer-contact-text p {
+    text-align: left;
+}
+
+html[lang="en"] .modal-header h3 {
+    text-align: left;
+}
+
+/* Ensure list items and text blocks align correctly in modal */
+html[lang="en"] .modal-body {
+    text-align: left;
+}
+html[lang="en"] .modal-body ul {
+    padding-left: 20px;
+    padding-right: 0;
+}
+
+/* Mobile responsive fixes for LTR */
+@media (max-width: 991px) {
+    html[lang="en"] .nav-menu {
+        left: -100%;
+        right: auto;
+    }
+    html[lang="en"] .nav-menu.open {
+        left: 0;
+    }
+}
+
+/* Logo visibility drop-shadow in dark mode */
+[data-theme="dark"] .logo img {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4));
+}
+
+/* --- Dark Mode Text Readability & Contrast Overrides --- */
+[data-theme="dark"] .btn-primary,
+[data-theme="dark"] .btn-secondary,
+[data-theme="dark"] .btn-whatsapp,
+[data-theme="dark"] .back-to-top,
+[data-theme="dark"] .floating-whatsapp,
+[data-theme="dark"] .booking-section,
+[data-theme="dark"] .booking-section h2,
+[data-theme="dark"] .booking-section h3,
+[data-theme="dark"] .booking-section p,
+[data-theme="dark"] .booking-section .form-control,
+[data-theme="dark"] .booking-section select.form-control,
+[data-theme="dark"] .booking-section textarea.form-control,
+[data-theme="dark"] .form-header h3,
+[data-theme="dark"] .form-header p,
+[data-theme="dark"] .form-label {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    background-color: #ffffff !important;
+    color: var(--primary-blue) !important;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    background-color: #ffffff !important;
+    color: var(--primary-navy) !important;
+}
+
+[data-theme="dark"] .btn-whatsapp:hover {
+    background-color: #ffffff !important;
+    color: #25d366 !important;
+}
+
+[data-theme="dark"] select.form-control option {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .modal-body strong {
+    color: #38bdf8 !important; /* light blue for strong tags in dark modals */
+}
+
+[data-theme="dark"] .modal-body {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .footer-col h3 {
+    color: #ffffff !important;
+}
+
+/* LTR Floating Icon Override for English mode */
+html[lang="en"] .service-icon-floating {
+    right: 25px !important;
+    left: auto !important;
 }
