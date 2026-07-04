@@ -205,4 +205,62 @@ document.addEventListener('DOMContentLoaded', () => {
         bookingForm.reset();
         alert('تم تجهيز طلبك! سيتم تحويلك الآن إلى الواتساب لإرسال رسالة التأكيد.');
     });
+
+    // --- 5. Legal Modals Handler ---
+    const openTermsElements = document.querySelectorAll('.open-terms-modal');
+    const openPrivacyElements = document.querySelectorAll('.open-privacy-modal');
+    const termsModal = document.getElementById('termsModal');
+    const privacyModal = document.getElementById('privacyModal');
+    const closeTermsBtn = document.getElementById('closeTermsModal');
+    const closePrivacyBtn = document.getElementById('closePrivacyModal');
+
+    const openModal = (modal) => {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Disable scroll on body
+    };
+
+    const closeModal = (modal) => {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scroll
+    };
+
+    openTermsElements.forEach(elem => {
+        elem.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal(termsModal);
+        });
+    });
+
+    openPrivacyElements.forEach(elem => {
+        elem.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal(privacyModal);
+        });
+    });
+
+    closeTermsBtn.addEventListener('click', () => closeModal(termsModal));
+    closePrivacyBtn.addEventListener('click', () => closeModal(privacyModal));
+
+    // Close on click outside modal container
+    window.addEventListener('click', (e) => {
+        if (e.target === termsModal) {
+            closeModal(termsModal);
+        }
+        if (e.target === privacyModal) {
+            closeModal(privacyModal);
+        }
+    });
+
+    // Close on Escape key press
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (termsModal.classList.contains('active')) {
+                closeModal(termsModal);
+            }
+            if (privacyModal.classList.contains('active')) {
+                closeModal(privacyModal);
+            }
+        }
+    });
 });
+
