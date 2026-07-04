@@ -196,8 +196,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const waNumber = '966533359350';
         const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(fullMessage)}`;
         
-        // Open WhatsApp chat in a new tab
-        window.open(waUrl, '_blank');
+        // Open WhatsApp chat in a new tab (with noopener/noreferrer to prevent
+        // the new tab from gaining access to window.opener — mitigates
+        // "reverse tabnabbing" attacks)
+        window.open(waUrl, '_blank', 'noopener,noreferrer');
         
         // Optional: Reset form after booking
         bookingForm.reset();
