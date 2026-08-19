@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bluekey.sa/sitemap.xml
+Sitemap: https://www.bluekey.sa/sitemap.xml
